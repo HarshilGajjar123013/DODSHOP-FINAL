@@ -67,7 +67,7 @@ export async function POST(req: Request) {
         userId = admin.id;
         name = admin.name;
         role = admin.role;
-        avatar = admin.avatar || name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        avatar = admin.avatar || name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
 
         // Update last login in background (if DB works)
         prisma.adminUser.update({
@@ -116,7 +116,7 @@ export async function POST(req: Request) {
           userId = registeredAdmin.id;
           name = registeredAdmin.name;
           role = registeredAdmin.role;
-          avatar = registeredAdmin.avatar || name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+          avatar = registeredAdmin.avatar || name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
         }
       } else {
         // Fall back to local developer accounts

@@ -33,7 +33,7 @@ export async function PATCH(
         name: dbCust.name,
         email: dbCust.email,
         phone: dbCust.phone || '',
-        avatar: dbCust.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'P',
+        avatar: dbCust.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() || 'P',
         totalOrders: dbCust.orders.length,
         totalSpent,
         notes: dbCust.notes || '',

@@ -24,7 +24,7 @@ export async function GET(req: Request) {
           name: c.name,
           email: c.email,
           phone: c.phone || '',
-          avatar: c.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'P',
+          avatar: c.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() || 'P',
           totalOrders: c.orders.length,
           totalSpent,
           notes: c.notes || '',

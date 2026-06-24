@@ -43,7 +43,7 @@ export async function GET() {
             name: admin.name,
             email: admin.email,
             role: admin.role,
-            avatar: admin.avatar || admin.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2),
+            avatar: admin.avatar || admin.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2),
           }
         });
       }

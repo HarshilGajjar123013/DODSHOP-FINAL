@@ -104,7 +104,7 @@ export async function POST(req: Request) {
 
     // Hash the password
     const passwordHash = await bcrypt.hash(password, 10);
-    const avatar = reqAvatar || name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    const avatar = reqAvatar || name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2);
 
     let newAdmin = null;
     let databaseConnected = true;
