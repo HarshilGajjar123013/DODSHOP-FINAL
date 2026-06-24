@@ -27,7 +27,7 @@ export async function PATCH(
     let updatedCategory = null;
 
     try {
-      updatedCategory = await prisma.$transaction(async (tx) => {
+      updatedCategory = await prisma.$transaction(async (tx: any) => {
         const dataToUpdate: any = { ...data };
         if (data.name) {
           dataToUpdate.slug = data.name
@@ -134,7 +134,7 @@ export async function DELETE(
         );
       }
 
-      deletedCategory = await prisma.$transaction(async (tx) => {
+      deletedCategory = await prisma.$transaction(async (tx: any) => {
         const cat = await tx.category.delete({
           where: { id }
         });

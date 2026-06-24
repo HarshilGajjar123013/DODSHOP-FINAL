@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     let newCategory = null;
 
     try {
-      newCategory = await prisma.$transaction(async (tx) => {
+      newCategory = await prisma.$transaction(async (tx: any) => {
         const cat = await tx.category.create({
           data: { ...data, slug }
         });

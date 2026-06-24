@@ -161,7 +161,7 @@ export async function POST(req: Request) {
 
     try {
       // 1. Try to save to DB
-      newProduct = await prisma.$transaction(async (tx) => {
+      newProduct = await prisma.$transaction(async (tx: any) => {
         const product = await tx.product.create({
           data: {
             ...data,

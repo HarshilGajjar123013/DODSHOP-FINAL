@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     let newCollection = null;
 
     try {
-      newCollection = await prisma.$transaction(async (tx) => {
+      newCollection = await prisma.$transaction(async (tx: any) => {
         const coll = await tx.collection.create({
           data: {
             ...data,

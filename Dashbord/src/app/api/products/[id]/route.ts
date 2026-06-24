@@ -88,7 +88,7 @@ export async function PATCH(
 
     try {
       // 1. Try DB transaction
-      updatedProduct = await prisma.$transaction(async (tx) => {
+      updatedProduct = await prisma.$transaction(async (tx: any) => {
         // Fetch current product to check stock difference
         const current = await tx.product.findUnique({
           where: { id },
@@ -248,7 +248,7 @@ export async function DELETE(
     let archivedProduct = null;
 
     try {
-      archivedProduct = await prisma.$transaction(async (tx) => {
+      archivedProduct = await prisma.$transaction(async (tx: any) => {
         // Soft delete by updating status to ARCHIVED
         const product = await tx.product.update({
           where: { id },

@@ -27,7 +27,7 @@ export async function PATCH(
     let updatedCollection = null;
 
     try {
-      updatedCollection = await prisma.$transaction(async (tx) => {
+      updatedCollection = await prisma.$transaction(async (tx: any) => {
         const dataToUpdate: any = { ...data };
         if (data.name) {
           dataToUpdate.slug = data.name
@@ -129,7 +129,7 @@ export async function DELETE(
     let deletedCollection = null;
 
     try {
-      deletedCollection = await prisma.$transaction(async (tx) => {
+      deletedCollection = await prisma.$transaction(async (tx: any) => {
         // Soft unlink collection from products
         await tx.product.updateMany({
           where: { collectionId: id },

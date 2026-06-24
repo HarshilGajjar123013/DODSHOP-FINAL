@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     let updatedProduct = null;
 
     try {
-      updatedProduct = await prisma.$transaction(async (tx) => {
+      updatedProduct = await prisma.$transaction(async (tx: any) => {
         const product = await tx.product.findUnique({
           where: { id: productId },
           select: { id: true, name: true, sku: true, stock: true }
