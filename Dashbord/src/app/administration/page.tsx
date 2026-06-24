@@ -297,7 +297,7 @@ export default function AdminManagement() {
                       {avatar ? (
                         <img src={avatar} alt="Avatar Preview" className="w-full h-full object-cover" />
                       ) : (
-                        name ? name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'A'
+                        name ? name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A'
                       )}
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all text-white text-[9px] uppercase font-bold">
                         Upload
