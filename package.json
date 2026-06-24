@@ -1,5 +1,7 @@
 {
   "name": "designs-of-dreams",
+  "version": "1.0.0",
+  "description": "Designs of Dreams Monorepo",
   "private": true,
   "workspaces": [
     "packages/*",
