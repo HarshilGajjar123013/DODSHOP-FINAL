@@ -6,7 +6,7 @@ import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
 import { cookies } from 'next/headers';
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'dod-atelier-fallback-secret'
+  process.env.JWT_SECRET || 'dod-atelier-fallback-secret-key-at-least-32-bytes-long'
 );
 
 const COOKIE_NAME = 'dod-customer-token';
