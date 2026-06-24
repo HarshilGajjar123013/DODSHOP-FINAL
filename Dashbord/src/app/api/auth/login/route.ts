@@ -73,7 +73,7 @@ export async function POST(req: Request) {
         prisma.adminUser.update({
           where: { id: admin.id },
           data: { lastLogin: new Date() }
-        }).catch(err => console.error('Failed to update last login:', err));
+        }).catch((err: any) => console.error('Failed to update last login:', err));
 
         // Create Security Log in background
         prisma.securityLog.create({
@@ -85,7 +85,7 @@ export async function POST(req: Request) {
             ip: req.headers.get('x-forwarded-for') || '127.0.0.1',
             device: req.headers.get('user-agent') || 'Unknown Browser'
           }
-        }).catch(err => console.error('Failed to write security log:', err));
+        }).catch((err: any) => console.error('Failed to write security log:', err));
       }
     } else if (!databaseConnected) {
       // 2. Query fallback database admins
@@ -145,7 +145,7 @@ export async function POST(req: Request) {
             ip: req.headers.get('x-forwarded-for') || '127.0.0.1',
             device: req.headers.get('user-agent') || 'Unknown Browser'
           }
-        }).catch(err => console.error('Failed to write failed security log:', err));
+        }).catch((err: any) => console.error('Failed to write failed security log:', err));
       } else {
         const secLogs = fallbackDb.getCollection('securityLogs');
         secLogs.push({
