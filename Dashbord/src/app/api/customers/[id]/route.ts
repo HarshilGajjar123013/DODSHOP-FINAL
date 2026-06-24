@@ -27,7 +27,7 @@ export async function PATCH(
         }
       });
 
-      const totalSpent = dbCust.orders.reduce((sum, o) => sum + o.grandTotal, 0);
+      const totalSpent = dbCust.orders.reduce((sum: number, o: any) => sum + o.grandTotal, 0);
       updatedCustomer = {
         id: dbCust.id,
         name: dbCust.name,
@@ -38,20 +38,20 @@ export async function PATCH(
         totalSpent,
         notes: dbCust.notes || '',
         joinedDate: dbCust.joinedDate.toISOString().split('T')[0],
-        wishlist: dbCust.wishlistItems.map(w => ({
+        wishlist: dbCust.wishlistItems.map((w: any) => ({
           productId: w.productId,
           name: w.product.name,
           price: w.product.sellingPrice,
           image: w.product.images?.[0] || ''
         })),
-        cart: dbCust.cartItems.map(ci => ({
+        cart: dbCust.cartItems.map((ci: any) => ({
           productId: ci.productId,
           name: ci.product.name,
           price: ci.product.sellingPrice,
           quantity: ci.quantity,
           image: ci.product.images?.[0] || ''
         })),
-        addresses: dbCust.addresses.map(a => ({
+        addresses: dbCust.addresses.map((a: any) => ({
           type: a.label,
           address: `${a.line1}, ${a.line2 ? a.line2 + ', ' : ''}${a.city}, ${a.state} ${a.postalCode}`
         }))
@@ -73,8 +73,8 @@ export async function PATCH(
       fallbackDb.saveCollection('customers', customers);
       
       const orders = fallbackDb.getCollection('orders');
-      const custOrders = orders.filter(o => o.customerName === customers[idx].name || o.customerId === customers[idx].id);
-      const totalSpent = custOrders.reduce((sum, o) => sum + o.grandTotal, 0);
+      const custOrders = orders.filter((o: any) => o.customerName === customers[idx].name || o.customerId === customers[idx].id);
+      const totalSpent = custOrders.reduce((sum: number, o: any) => sum + o.grandTotal, 0);
       
       updatedCustomer = {
         ...customers[idx],

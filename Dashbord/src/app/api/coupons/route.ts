@@ -12,7 +12,7 @@ export async function GET() {
       const dbCoupons = await prisma.coupon.findMany({
         orderBy: { createdAt: 'desc' }
       });
-      coupons = dbCoupons.map(c => ({
+      coupons = dbCoupons.map((c: any) => ({
         id: c.id,
         code: c.code,
         discountPercent: c.discountPercent,

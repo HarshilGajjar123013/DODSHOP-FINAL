@@ -17,8 +17,8 @@ export async function GET(req: Request) {
         }
       });
 
-      customers = dbCustomers.map(c => {
-        const totalSpent = c.orders.reduce((sum, o) => sum + o.grandTotal, 0);
+      customers = dbCustomers.map((c: any) => {
+        const totalSpent = c.orders.reduce((sum: number, o: any) => sum + o.grandTotal, 0);
         return {
           id: c.id,
           name: c.name,
@@ -29,20 +29,20 @@ export async function GET(req: Request) {
           totalSpent,
           notes: c.notes || '',
           joinedDate: c.joinedDate.toISOString().split('T')[0],
-          wishlist: c.wishlistItems.map(w => ({
+          wishlist: c.wishlistItems.map((w: any) => ({
             productId: w.productId,
             name: w.product.name,
             price: w.product.sellingPrice,
             image: w.product.images?.[0] || ''
           })),
-          cart: c.cartItems.map(ci => ({
+          cart: c.cartItems.map((ci: any) => ({
             productId: ci.productId,
             name: ci.product.name,
             price: ci.product.sellingPrice,
             quantity: ci.quantity,
             image: ci.product.images?.[0] || ''
           })),
-          addresses: c.addresses.map(a => ({
+          addresses: c.addresses.map((a: any) => ({
             type: a.label,
             address: `${a.line1}, ${a.line2 ? a.line2 + ', ' : ''}${a.city}, ${a.state} ${a.postalCode}`
           }))
@@ -59,9 +59,9 @@ export async function GET(req: Request) {
       const orders = fallbackDb.getCollection('orders');
       
       // Calculate derived totals from fallback orders list to be dynamic
-      customers = allCust.map(c => {
-        const custOrders = orders.filter(o => o.customerName === c.name || o.customerId === c.id);
-        const totalSpent = custOrders.reduce((sum, o) => sum + o.grandTotal, 0);
+      customers = allCust.map((c: any) => {
+        const custOrders = orders.filter((o: any) => o.customerName === c.name || o.customerId === c.id);
+        const totalSpent = custOrders.reduce((sum: number, o: any) => sum + o.grandTotal, 0);
         return {
           ...c,
           totalOrders: custOrders.length,
