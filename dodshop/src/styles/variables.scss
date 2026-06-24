@@ -1,0 +1,33 @@
+/* 
+   🎨 DODSHOP Color System 
+   Strict Palette: Orange, White, Black
+*/
+
+// ── Core Colors ──
+$brand-orange: #FF6A00;
+$brand-white: #FFFFFF;
+$brand-black: #000000;
+
+// ── Functional Aliases ──
+$primary: $brand-orange;
+$bg-main: $brand-white;
+$text-main: $brand-black;
+
+// ── Supporting Tones (Strictly within the 3-color family) ──
+$primary-soft: rgba($brand-orange, 0.1);
+$black-soft: #121212;
+$white-soft: #FAFAFA;
+
+// ── CSS Custom Properties ──
+:root {
+    --primary: #{$brand-orange};
+    --white: #{$brand-white};
+    --black: #{$brand-black};
+    
+    // Backgrounds
+    --bg-main: #{$brand-white};
+    --text-main: #{$brand-black};
+}
+
+// ── Common Easings ──
+$ease-luxury: cubic-bezier(0.25, 0.46, 0.45, 0.94);

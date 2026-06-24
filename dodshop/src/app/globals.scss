@@ -1,0 +1,22 @@
+@use "../styles/variables.scss" as *;
+
+// Global Core Stylesheets
+@use "../components/common/Navbar/Navbar.scss";
+@use "../components/common/Footer.scss";
+@use "../components/common/Preloader/Preloader.scss";
+
+// Homepage Sections Stylesheets
+@use "../components/sections/Hero/Hero.scss";
+@use "../components/sections/Collection/Collection.scss";
+@use "../components/sections/Gallery/Gallery.scss";
+@use "../components/sections/FAQ/FAQ.scss";
+
+// Inner Pages Sections Stylesheets
+@use "../components/sections/Contact/Contact.scss";
+@use "../components/sections/About/About.scss";
+@use "../components/sections/details/Gallery/Gallery.scss" as detailsGallery;
+
+// E-commerce Page Stylesheets
+@use "./collection/CollectionCatalog.scss";
+@use "./cart/Cart.scss";
+@use "./login/Login.scss";

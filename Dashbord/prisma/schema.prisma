@@ -1,0 +1,231 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User Role Enumeration
+enum Role {
+  SUPER_ADMIN
+  MANAGER
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+}
+
+// Product Status Enumeration
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+// Order Status Enumeration
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURNED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PAID
+  UNPAID
+  REFUND_INITIATED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  UPI
+  NET_BANKING
+  BANK_TRANSFER
+}
+
+enum InventoryLogType {
+  STOCK_IN
+  SALE
+  RETURN
+  MANUAL_ADJUST
+}
+
+enum ContactStatus {
+  UNREAD
+  REPLIED
+  ARCHIVED
+}
+
+enum LogStatus {
+  SUCCESS
+  FAILED
+}
+
+// Administrator User model
+model AdminUser {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  role         Role          @default(MANAGER)
+  avatar       String
+  status       AccountStatus @default(ACTIVE)
+  lastLogin    DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+// Product Inventory Catalog Model
+model Product {
+  id            String        @id @default(uuid())
+  name          String
+  slug          String        @unique
+  sku           String        @unique
+  category      String
+  subCategory   String
+  collection    String
+  mrp           Float
+  sellingPrice  Float
+  discount      Float         @default(0)
+  gst           Float         @default(5)
+  stock         Int           @default(0)
+  lowStockAlert Int           @default(2)
+  description   String        @db.Text
+  fabric        String
+  weaveType     String
+  occasion      String
+  colors        String[]      // Hex values
+  sizes         String[]      // e.g. ["S", "M", "L", "Free Size"]
+  features      String[]
+  tags          String[]
+  status        ProductStatus @default(ACTIVE)
+  featured      Boolean       @default(false)
+  bestSeller    Boolean       @default(false)
+  premium       Boolean       @default(true)
+  newArrival    Boolean       @default(false)
+  images        String[]      // Cloudinary image URL arrays
+  videoUrl      String?
+
+  inventoryLogs InventoryLog[]
+  orderItems    OrderItem[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+// Inventory Logs Movement Tracking
+model InventoryLog {
+  id          String           @id @default(uuid())
+  productId   String
+  product     Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productName String
+  sku         String
+  change      Int
+  type        InventoryLogType
+  timestamp   DateTime         @default(now())
+  user        String           // Name and Role of the actor
+}
+
+// Ordered Items Relations
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  name      String
+  sku       String
+  price     Float
+  quantity  Int
+  size      String
+  color     String
+  image     String
+}
+
+// Order Core Headers Model
+model Order {
+  id              String        @id
+  customerId      String
+  customerName    String
+  customerEmail   String
+  items           OrderItem[]
+  totalAmount     Float
+  discountAmount  Float         @default(0)
+  gstAmount       Float         @default(0)
+  shippingAmount  Float         @default(0)
+  grandTotal      Float
+  status          OrderStatus   @default(PENDING)
+  paymentStatus   PaymentStatus @default(UNPAID)
+  paymentMethod   PaymentMethod
+  shippingAddress Json          // Stores line1, line2, city, state, postalCode, country, phone
+  trackingDetails Json?         // Stores carrier, trackingId, estimatedDelivery, log list
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+// Customer Profile Registry
+model Customer {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  phone      String
+  avatar     String
+  notes      String   @db.Text
+  joinedDate DateTime @default(now())
+  wishlist   Json     // Stores [{ productId, name, price, image }]
+  cart       Json     // Stores [{ productId, name, price, quantity, image }]
+  addresses  Json     // Stores [{ type, address }]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// Contact Support Tickets
+model ContactForm {
+  id        String        @id @default(uuid())
+  name      String
+  email     String
+  phone     String
+  subject   String
+  message   String        @db.Text
+  status    ContactStatus @default(UNREAD)
+  reply     String?       @db.Text
+  repliedAt DateTime?
+  createdAt DateTime      @default(now())
+}
+
+// Central CMS Configuration Settings
+model CMSConfig {
+  id                  String   @id @default("singleton")
+  heroTitle           String
+  heroSubtitle        String
+  heroImage           String
+  announcementText    String
+  announcementLink    String
+  announcementActive  Boolean  @default(true)
+  featuredCollections Json     // Stores [{ id, name, image, count }]
+  gallery             Json?
+  bannerMiddle        String
+  footerBio           String
+  seoTitle            String
+  seoDescription      String
+  updatedAt           DateTime @updatedAt
+}
+
+// Security Audit Event Tracker
+model SecurityLog {
+  id        String    @id @default(uuid())
+  timestamp DateTime  @default(now())
+  action    String
+  adminName String
+  role      String
+  ip        String
+  device    String
+  status    LogStatus
+}

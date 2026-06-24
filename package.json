@@ -1,0 +1,9 @@
+{
+  "name": "designs-of-dreams",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "dodshop",
+    "Dashbord"
+  ]
+}

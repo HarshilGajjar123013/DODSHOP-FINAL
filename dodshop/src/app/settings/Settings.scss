@@ -1,0 +1,322 @@
+@use "../../styles/variables.scss" as *;
+
+$font-display: var(--font-playfair), 'Playfair Display', serif;
+$font-body: var(--font-poppins), 'Poppins', sans-serif;
+$font-accent: var(--font-marcellus), 'Marcellus', serif;
+
+$brand-orange: #FF6A00;
+$brand-white: #ffffff;
+$brand-black: #1a1a1a;
+
+.settings-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 10;
+
+  @media (max-width: 768px) {
+    padding: 20px 16px 120px;
+  }
+}
+
+.settings-header {
+  border-bottom: 1px solid rgba($brand-black, 0.08);
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+
+  h2 {
+    font-family: $font-accent;
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: $brand-black;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    @media (max-width: 768px) {
+      font-size: 1.6rem;
+    }
+  }
+
+  p {
+    font-family: $font-body;
+    font-size: 0.95rem;
+    color: rgba($brand-black, 0.5);
+    margin: 0;
+  }
+}
+
+.settings-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+  align-items: flex-start;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+// Sidebar Navigation
+.settings-sidebar {
+  background-color: #FAF9F6;
+  border: 1px solid rgba($brand-black, 0.06);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+
+  .sidebar-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .sidebar-btn {
+      width: 100%;
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: $font-body;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba($brand-black, 0.7);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+
+      svg {
+        color: rgba($brand-black, 0.4);
+        transition: color 0.2s ease;
+      }
+
+      &:hover {
+        background-color: rgba($brand-orange, 0.03);
+        color: $brand-orange;
+        svg {
+          color: $brand-orange;
+        }
+      }
+
+      &.is-active {
+        background-color: $brand-orange;
+        color: $brand-white;
+        svg {
+          color: $brand-white;
+        }
+      }
+    }
+  }
+}
+
+// Content Layout
+.settings-content-area {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.settings-card {
+  background-color: #FAF9F6;
+  border: 1px solid rgba($brand-black, 0.06);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+
+  @media (max-width: 600px) {
+    padding: 20px;
+  }
+
+  h3 {
+    font-family: $font-accent;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $brand-black;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px dashed rgba($brand-black, 0.08);
+    padding-bottom: 12px;
+  }
+}
+
+// Privacy List Preferences
+.privacy-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.privacy-toggle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $brand-white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba($brand-black, 0.04);
+
+  .toggle-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-right: 20px;
+
+    h5 {
+      font-family: $font-accent;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: $brand-black;
+      margin: 0;
+    }
+
+    p {
+      font-family: $font-body;
+      font-size: 0.8rem;
+      color: rgba($brand-black, 0.5);
+      margin: 0;
+    }
+  }
+
+  // Toggle Switch
+  .switch-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+    flex-shrink: 0;
+
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+
+      &:checked + .switch-slider {
+        background-color: $brand-orange;
+
+        &::before {
+          transform: translateX(20px);
+        }
+      }
+    }
+
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+
+      &::before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+// Policies list
+.policy-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.policy-block {
+  background-color: $brand-white;
+  border: 1px solid rgba($brand-black, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+
+  h4 {
+    font-family: $font-accent;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: $brand-black;
+    margin: 0 0 10px 0;
+  }
+
+  p {
+    font-family: $font-body;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba($brand-black, 0.6);
+    margin: 0;
+  }
+}
+
+// Return requests status layout
+.status-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.status-timeline-item {
+  display: flex;
+  gap: 16px;
+  background-color: $brand-white;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba($brand-black, 0.05);
+
+  .status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+
+    &.approved { background-color: #10B981; }
+    &.pending { background-color: $brand-orange; }
+    &.completed { background-color: #3B82F6; }
+  }
+
+  .status-details {
+    h5 {
+      font-family: $font-accent;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: $brand-black;
+      margin: 0 0 4px 0;
+    }
+
+    p {
+      font-family: $font-body;
+      font-size: 0.8rem;
+      color: rgba($brand-black, 0.5);
+      margin: 0 0 8px 0;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 30px;
+      font-family: $font-body;
+      font-size: 0.7rem;
+      font-weight: 600;
+
+      &.approved { background-color: rgba(#10B981, 0.06); color: #059669; }
+      &.pending { background-color: rgba($brand-orange, 0.06); color: $brand-orange; }
+      &.completed { background-color: rgba(#3B82F6, 0.06); color: #2563EB; }
+    }
+  }
+}

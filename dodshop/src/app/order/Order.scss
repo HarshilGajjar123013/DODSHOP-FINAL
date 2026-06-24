@@ -1,0 +1,398 @@
+@use "../../styles/variables.scss" as *;
+
+$font-display: var(--font-playfair), 'Playfair Display', serif;
+$font-body: var(--font-poppins), 'Poppins', sans-serif;
+$font-accent: var(--font-marcellus), 'Marcellus', serif;
+
+$brand-orange: #FF6A00;
+$brand-white: #ffffff;
+$brand-black: #1a1a1a;
+
+.order-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 10;
+
+  @media (max-width: 768px) {
+    padding: 20px 16px 120px;
+  }
+}
+
+.order-header {
+  border-bottom: 1px solid rgba($brand-black, 0.08);
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+
+  h2 {
+    font-family: $font-accent;
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: $brand-black;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    @media (max-width: 768px) {
+      font-size: 1.6rem;
+    }
+  }
+
+  p {
+    font-family: $font-body;
+    font-size: 0.95rem;
+    color: rgba($brand-black, 0.5);
+    margin: 0;
+  }
+}
+
+.order-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+  align-items: flex-start;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+// Sidebar Navigation
+.order-sidebar {
+  background-color: #FAF9F6;
+  border: 1px solid rgba($brand-black, 0.06);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+
+  .sidebar-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .sidebar-btn {
+      width: 100%;
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: $font-body;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba($brand-black, 0.7);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+
+      svg {
+        color: rgba($brand-black, 0.4);
+        transition: color 0.2s ease;
+      }
+
+      &:hover {
+        background-color: rgba($brand-orange, 0.03);
+        color: $brand-orange;
+        svg {
+          color: $brand-orange;
+        }
+      }
+
+      &.is-active {
+        background-color: $brand-orange;
+        color: $brand-white;
+        svg {
+          color: $brand-white;
+        }
+      }
+    }
+  }
+}
+
+// Order Cards and List
+.order-content-area {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.order-card {
+  background-color: #FAF9F6;
+  border: 1px solid rgba($brand-black, 0.06);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+
+  @media (max-width: 600px) {
+    padding: 20px;
+  }
+
+  h3 {
+    font-family: $font-accent;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $brand-black;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px dashed rgba($brand-black, 0.08);
+    padding-bottom: 12px;
+  }
+}
+
+// Order Items List
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-item-block {
+  background-color: $brand-white;
+  border: 1px solid rgba($brand-black, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba($brand-black, 0.04);
+    padding-bottom: 12px;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .order-id {
+      font-family: $font-body;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: $brand-black;
+    }
+
+    .order-date {
+      font-family: $font-body;
+      font-size: 0.8rem;
+      color: rgba($brand-black, 0.5);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-family: $font-body;
+      font-size: 0.75rem;
+      font-weight: 600;
+
+      &.processing {
+        background-color: rgba($brand-orange, 0.05);
+        color: $brand-orange;
+      }
+      &.delivered {
+        background-color: rgba(#10B981, 0.05);
+        color: #059669;
+      }
+      &.cancelled {
+        background-color: rgba(#EF4444, 0.05);
+        color: #DC2626;
+      }
+    }
+  }
+
+  .item-products {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .product-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .product-img-wrapper {
+      position: relative;
+      width: 50px;
+      height: 65px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba($brand-black, 0.05);
+      background-color: rgba($brand-black, 0.02);
+    }
+
+    .product-details {
+      flex: 1;
+      
+      h5 {
+        font-family: $font-accent;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: $brand-black;
+        margin: 0 0 2px 0;
+      }
+
+      span {
+        font-family: $font-body;
+        font-size: 0.75rem;
+        color: rgba($brand-black, 0.5);
+      }
+    }
+
+    .product-price {
+      font-family: $font-body;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: $brand-black;
+    }
+  }
+
+  .item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba($brand-black, 0.04);
+    padding-top: 12px;
+
+    .total-label {
+      font-family: $font-body;
+      font-size: 0.85rem;
+      color: rgba($brand-black, 0.5);
+    }
+
+    .total-amount {
+      font-family: $font-body;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: $brand-black;
+    }
+  }
+}
+
+// Visual Tracker
+.tracker-timeline {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 30px 0;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 24px;
+    padding-left: 20px;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: rgba($brand-black, 0.08);
+    z-index: 1;
+
+    @media (max-width: 600px) {
+      top: 0;
+      bottom: 0;
+      left: 14px;
+      width: 3px;
+      height: 100%;
+    }
+  }
+
+  .tracker-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    flex: 1;
+
+    @media (max-width: 600px) {
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .step-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #E4E4E7;
+      color: rgba($brand-black, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: $font-body;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 3px solid #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s;
+    }
+
+    .step-label {
+      font-family: $font-body;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba($brand-black, 0.5);
+      margin-top: 10px;
+
+      @media (max-width: 600px) {
+        margin-top: 0;
+      }
+    }
+
+    &.is-completed {
+      .step-dot {
+        background-color: $brand-orange;
+        color: $brand-white;
+        box-shadow: 0 4px 12px rgba($brand-orange, 0.25);
+      }
+      .step-label {
+        color: $brand-orange;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// Forms inside Order Sections
+.order-cancel-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba($brand-black, 0.12);
+    font-family: $font-body;
+    font-size: 0.9rem;
+    outline: none;
+    resize: vertical;
+
+    &:focus {
+      border-color: $brand-orange;
+      box-shadow: 0 0 0 3px rgba($brand-orange, 0.1);
+    }
+  }
+}

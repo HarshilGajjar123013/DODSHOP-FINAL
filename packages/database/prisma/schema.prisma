@@ -1,0 +1,456 @@
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 🏛️  DESIGNS OF DREAMS — Unified Database Schema
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Shared across: Dashboard (Admin) + dodshop (Customer Website)
+// Database:      PostgreSQL
+// ORM:           Prisma v7
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ────────────────────────────────────────────────────────────
+// ENUMERATIONS
+// ────────────────────────────────────────────────────────────
+
+enum AdminRole {
+  SUPER_ADMIN
+  MANAGER
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURNED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  REFUND_INITIATED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  UPI
+  NET_BANKING
+  BANK_TRANSFER
+  COD
+}
+
+enum InventoryLogType {
+  STOCK_IN
+  SALE
+  RETURN
+  MANUAL_ADJUST
+}
+
+enum ContactStatus {
+  UNREAD
+  REPLIED
+  ARCHIVED
+}
+
+enum ReturnStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PICKED_UP
+  REFUNDED
+}
+
+enum AuditStatus {
+  SUCCESS
+  FAILED
+}
+
+// ────────────────────────────────────────────────────────────
+// 1. ADMIN USER — Dashboard administrator accounts
+// ────────────────────────────────────────────────────────────
+
+model AdminUser {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  role         AdminRole     @default(MANAGER)
+  avatar       String?
+  status       AccountStatus @default(ACTIVE)
+  lastLogin    DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("admin_users")
+}
+
+// ────────────────────────────────────────────────────────────
+// 2. CATEGORY — Product categories (Sarees, Kurtis, etc.)
+// ────────────────────────────────────────────────────────────
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?  @db.Text
+  image       String?
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+
+// ────────────────────────────────────────────────────────────
+// 3. COLLECTION — Seasonal/themed collections
+// ────────────────────────────────────────────────────────────
+
+model Collection {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?   @db.Text
+  image       String?
+  season      String?
+  isActive    Boolean   @default(true)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  products Product[]
+
+  @@map("collections")
+}
+
+// ────────────────────────────────────────────────────────────
+// 4. PRODUCT — Full product catalog
+// ────────────────────────────────────────────────────────────
+
+model Product {
+  id            String        @id @default(uuid())
+  name          String
+  slug          String        @unique
+  sku           String        @unique
+  categoryId    String
+  category      Category      @relation(fields: [categoryId], references: [id])
+  subCategory   String
+  collectionId  String?
+  collection    Collection?   @relation(fields: [collectionId], references: [id])
+  mrp           Float
+  sellingPrice  Float
+  discount      Float         @default(0)
+  gst           Float         @default(5)
+  stock         Int           @default(0)
+  lowStockAlert Int           @default(2)
+  description   String        @db.Text
+  fabric        String
+  weaveType     String
+  occasion      String
+  sareeLength      String?
+  blousePiece      String?
+  careInstructions String?
+  origin           String?
+  colors        String[]
+  sizes         String[]
+  features      String[]
+  tags          String[]
+  status        ProductStatus @default(ACTIVE)
+  featured      Boolean       @default(false)
+  bestSeller    Boolean       @default(false)
+  premium       Boolean       @default(true)
+  newArrival    Boolean       @default(false)
+  images        String[]
+  videoUrl      String?
+  rating        Float         @default(0)
+  reviewCount   Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  inventoryLogs InventoryLog[]
+  orderItems    OrderItem[]
+  cartItems     CartItem[]
+  wishlistItems WishlistItem[]
+
+  @@map("products")
+}
+
+// ────────────────────────────────────────────────────────────
+// 5. CUSTOMER — Website registered customers
+// ────────────────────────────────────────────────────────────
+
+model Customer {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  phone        String?
+  avatar       String?
+  notes        String?  @db.Text
+  isVerified   Boolean  @default(false)
+  joinedDate   DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  addresses     Address[]
+  cartItems     CartItem[]
+  wishlistItems WishlistItem[]
+  orders        Order[]
+  returnRequests ReturnRequest[]
+
+  @@map("customers")
+}
+
+// ────────────────────────────────────────────────────────────
+// 6. ADDRESS — Customer shipping/billing addresses
+// ────────────────────────────────────────────────────────────
+
+model Address {
+  id         String  @id @default(uuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  label      String   @default("Home")
+  line1      String
+  line2      String?
+  city       String
+  state      String
+  postalCode String
+  country    String   @default("India")
+  phone      String?
+  isDefault  Boolean  @default(false)
+
+  @@map("addresses")
+}
+
+// ────────────────────────────────────────────────────────────
+// 7. CART ITEM — Customer shopping cart
+// ────────────────────────────────────────────────────────────
+
+model CartItem {
+  id         String   @id @default(uuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity   Int      @default(1)
+  size       String
+  createdAt  DateTime @default(now())
+
+  @@unique([customerId, productId, size])
+  @@map("cart_items")
+}
+
+// ────────────────────────────────────────────────────────────
+// 8. WISHLIST ITEM — Customer wishlist
+// ────────────────────────────────────────────────────────────
+
+model WishlistItem {
+  id         String   @id @default(uuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([customerId, productId])
+  @@map("wishlist_items")
+}
+
+// ────────────────────────────────────────────────────────────
+// 9. ORDER — Order headers
+// ────────────────────────────────────────────────────────────
+
+model Order {
+  id              String        @id // Format: DOD-XXXXXX
+  customerId      String
+  customer        Customer      @relation(fields: [customerId], references: [id])
+  customerName    String
+  customerEmail   String
+  totalAmount     Float
+  discountAmount  Float         @default(0)
+  gstAmount       Float         @default(0)
+  shippingAmount  Float         @default(0)
+  grandTotal      Float
+  status          OrderStatus   @default(PENDING)
+  paymentStatus   PaymentStatus @default(UNPAID)
+  paymentMethod   PaymentMethod
+  shippingAddress Json          // { line1, line2, city, state, postalCode, country, phone }
+  trackingDetails Json?         // { carrier, trackingId, estimatedDelivery, logs[] }
+  cancelReason    String?       @db.Text
+  returnReason    String?       @db.Text
+  couponCode      String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  items          OrderItem[]
+  returnRequests ReturnRequest[]
+
+  @@map("orders")
+}
+
+// ────────────────────────────────────────────────────────────
+// 10. ORDER ITEM — Individual items within orders
+// ────────────────────────────────────────────────────────────
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  name      String
+  sku       String
+  price     Float
+  quantity  Int
+  size      String
+  color     String?
+  image     String
+
+  @@map("order_items")
+}
+
+// ────────────────────────────────────────────────────────────
+// 11. INVENTORY LOG — Stock movement tracking
+// ────────────────────────────────────────────────────────────
+
+model InventoryLog {
+  id          String           @id @default(uuid())
+  productId   String
+  product     Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productName String
+  sku         String
+  change      Int              // + for stock in, - for stock out
+  type        InventoryLogType
+  timestamp   DateTime         @default(now())
+  user        String           // Name and Role of the actor
+
+  @@map("inventory_logs")
+}
+
+// ────────────────────────────────────────────────────────────
+// 12. RETURN REQUEST — Return/refund lifecycle tracking
+// ────────────────────────────────────────────────────────────
+
+model ReturnRequest {
+  id              String       @id @default(uuid())
+  orderId         String
+  order           Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  customerId      String
+  customer        Customer     @relation(fields: [customerId], references: [id])
+  reason          String
+  description     String?      @db.Text
+  images          String[]
+  status          ReturnStatus @default(PENDING)
+  refundAmount    Float?
+  rejectionReason String?      @db.Text
+  createdAt       DateTime     @default(now())
+  resolvedAt      DateTime?
+
+  @@map("return_requests")
+}
+
+// ────────────────────────────────────────────────────────────
+// 13. CONTACT FORM — Customer contact submissions
+// ────────────────────────────────────────────────────────────
+
+model ContactForm {
+  id        String        @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String        @db.Text
+  status    ContactStatus @default(UNREAD)
+  reply     String?       @db.Text
+  repliedAt DateTime?
+  createdAt DateTime      @default(now())
+
+  @@map("contact_forms")
+}
+
+// ────────────────────────────────────────────────────────────
+// 14. CMS CONFIG — Homepage CMS configuration (singleton)
+// ────────────────────────────────────────────────────────────
+
+model CMSConfig {
+  id                  String   @id @default("singleton")
+  heroTitle           String
+  heroSubtitle        String
+  heroImage           String
+  announcementText    String?
+  announcementLink    String?
+  announcementActive  Boolean  @default(true)
+  featuredCollections Json     // [{ id, name, image, count }]
+  gallery             Json?
+  bannerMiddle        String?
+  footerBio           String?  @db.Text
+  seoTitle            String
+  seoDescription      String   @db.Text
+  updatedAt           DateTime @updatedAt
+
+  @@map("cms_config")
+}
+
+// ────────────────────────────────────────────────────────────
+// 15. COUPON — Promotional discount codes
+// ────────────────────────────────────────────────────────────
+
+model Coupon {
+  id              String   @id @default(uuid())
+  code            String   @unique
+  discountPercent Float
+  maxDiscount     Float?
+  minOrderValue   Float    @default(0)
+  usageLimit      Int?
+  timesUsed       Int      @default(0)
+  isActive        Boolean  @default(true)
+  validFrom       DateTime @default(now())
+  validUntil      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("coupons")
+}
+
+// ────────────────────────────────────────────────────────────
+// 16. SECURITY LOG — Admin activity audit trail
+// ────────────────────────────────────────────────────────────
+
+model SecurityLog {
+  id        String      @id @default(uuid())
+  timestamp DateTime    @default(now())
+  action    String
+  adminName String
+  role      String
+  ip        String?
+  device    String?
+  status    AuditStatus
+
+  @@map("security_logs")
+}

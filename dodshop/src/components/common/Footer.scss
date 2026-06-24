@@ -1,0 +1,516 @@
+@use "../../styles/variables.scss" as *;
+
+// Spacing Variables
+$sp-sm: 8px;
+$sp-md: 16px;
+$sp-lg: 24px;
+$sp-xl: 48px;
+
+// Typography Variables
+$font-display: var(--font-playfair), 'Playfair Display', serif;
+$font-body: var(--font-poppins), 'Poppins', sans-serif;
+$font-accent: var(--font-marcellus), 'Marcellus', serif;
+
+.footer {
+  position: relative;
+  background-color: $brand-black;
+  color: $brand-white;
+  overflow: hidden;
+  width: 100%;
+  margin-top: auto; // Push footer to bottom
+
+  // Subtle background glow
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(circle, rgba($brand-orange, 0.04) 0%, transparent 80%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  // ── Newsletter Sub Bar ─────────────────────────────────────────────────────
+  &-newsletter {
+    position: relative;
+    z-index: 2;
+    border-bottom: 1px solid rgba($brand-white, 0.08);
+    padding: 60px 0;
+
+    &__container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 60px;
+      align-items: center;
+
+      @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      @media (max-width: 768px) {
+        padding: 0 20px;
+      }
+    }
+
+    &__left {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      h3 {
+        font-family: $font-display;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 0;
+        color: $brand-white;
+      }
+
+      p {
+        font-family: $font-body;
+        font-size: 0.88rem;
+        color: rgba($brand-white, 0.6);
+        line-height: 1.5;
+        margin: 0;
+        max-width: 550px;
+      }
+    }
+
+    &__tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: $brand-orange;
+      font-family: $font-body;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+    }
+
+    &__form {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+
+      @media (max-width: 500px) {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    &__input-group {
+      position: relative;
+      flex: 1;
+    }
+
+    &__input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1.5px solid rgba($brand-white, 0.15);
+      padding: 14px 0;
+      color: $brand-white;
+      font-family: $font-body;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.4s ease;
+
+      &::placeholder {
+        color: rgba($brand-white, 0.3);
+      }
+
+      &:focus {
+        border-bottom-color: transparent;
+
+        ~ .footer-newsletter__line {
+          transform: scaleX(1);
+        }
+      }
+    }
+
+    &__line {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1.5px;
+      background-color: $brand-orange;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s $ease-luxury;
+    }
+
+    &__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 30px;
+      background-color: $brand-white;
+      color: $brand-black;
+      font-family: $font-body;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s $ease-luxury;
+
+      &:hover {
+        background-color: $brand-orange;
+        color: $brand-white;
+        box-shadow: 0 8px 20px rgba($brand-orange, 0.25);
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  // ── Main Link Directory ────────────────────────────────────────────────────
+  &-main {
+    position: relative;
+    z-index: 2;
+    padding: 80px 0;
+    border-bottom: 1px solid rgba($brand-white, 0.08);
+
+    &__container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1.25fr 2fr 0.75fr;
+      gap: 60px;
+
+      @media (max-width: 1100px) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 0 20px;
+      }
+    }
+  }
+
+  // Brand Column
+  &-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: $brand-white;
+      text-decoration: none;
+    }
+
+    &__emblem {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    &__text {
+      display: flex;
+      flex-direction: column;
+
+      .title {
+        font-family: $font-accent;
+        font-size: 1.35rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        line-height: 1;
+      }
+
+      .subtitle {
+        font-family: $font-body;
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.38em;
+        color: $brand-orange;
+        margin-top: 2px;
+      }
+    }
+
+    &__desc {
+      font-family: $font-body;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: rgba($brand-white, 0.55);
+      margin: 0;
+      max-width: 320px;
+    }
+  }
+
+  // Contact info
+  &-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &__item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: $font-body;
+      font-size: 0.82rem;
+      color: rgba($brand-white, 0.65);
+
+      svg {
+        color: $brand-orange;
+        flex-shrink: 0;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s;
+
+        &:hover {
+          color: $brand-orange;
+        }
+      }
+    }
+  }
+
+  // Links columns
+  &-links-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+  }
+
+  &-links-col {
+    h4 {
+      font-family: $font-accent;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: $brand-white;
+      margin: 0 0 20px 0;
+    }
+  }
+
+  &-links-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &-link-item {
+    position: relative;
+    display: inline-block;
+    font-family: $font-body;
+    font-size: 0.82rem;
+    color: rgba($brand-white, 0.55);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    padding-bottom: 2px;
+
+    &__line {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background-color: $brand-orange;
+      transition: width 0.4s $ease-luxury;
+    }
+
+    &:hover {
+      color: $brand-white;
+
+      .footer-link-item__line {
+        width: 100%;
+      }
+    }
+  }
+
+  // Atelier Column
+  &-atelier {
+    h4 {
+      font-family: $font-accent;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: $brand-white;
+      margin: 0 0 20px 0;
+    }
+
+    &__hours {
+      font-family: $font-body;
+      font-size: 0.82rem;
+      color: rgba($brand-white, 0.55);
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      p {
+        margin: 0;
+      }
+
+      .highlight {
+        color: $brand-orange;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+      }
+    }
+
+    &__row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: $brand-white;
+      font-weight: 600;
+      margin-bottom: 4px;
+
+      svg {
+        color: $brand-orange;
+      }
+    }
+
+    &__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: 1px solid rgba($brand-white, 0.15);
+      color: $brand-white;
+      background-color: rgba($brand-white, 0.03);
+      font-family: $font-body;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.3s;
+
+      &:hover {
+        background-color: $brand-orange;
+        border-color: $brand-orange;
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  // ── Bottom Legal Bar ───────────────────────────────────────────────────────
+  &-bottom {
+    position: relative;
+    z-index: 2;
+    padding: 30px 0;
+    background-color: #080808;
+
+    &__container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+
+      @media (max-width: 900px) {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      @media (max-width: 768px) {
+        padding: 0 20px;
+      }
+    }
+
+    &__right {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+
+      @media (max-width: 900px) {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+  }
+
+  &-copyright {
+    font-family: $font-body;
+    font-size: 0.75rem;
+    color: rgba($brand-white, 0.4);
+    margin: 0;
+  }
+
+  &-socials {
+    display: flex;
+    gap: 12px;
+  }
+
+  &-social-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba($brand-white, 0.05);
+    border: 1px solid rgba($brand-white, 0.1);
+    color: rgba($brand-white, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: $brand-orange;
+      border-color: $brand-orange;
+      color: $brand-white;
+      transform: translateY(-3px) scale(1.05);
+    }
+  }
+
+  &-legal {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: $font-body;
+    font-size: 0.75rem;
+    color: rgba($brand-white, 0.4);
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.3s;
+
+      &:hover {
+        color: $brand-white;
+      }
+    }
+  }
+}

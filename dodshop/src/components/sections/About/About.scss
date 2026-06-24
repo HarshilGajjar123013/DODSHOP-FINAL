@@ -1,0 +1,471 @@
+@use "../../../styles/variables.scss" as *;
+
+// Local Variables
+$sp-sm: 8px;
+$sp-md: 16px;
+$sp-lg: 24px;
+$sp-xl: 48px;
+
+$font-display: var(--font-playfair), 'Playfair Display', serif;
+$font-body: var(--font-poppins), 'Poppins', sans-serif;
+$font-accent: var(--font-marcellus), 'Marcellus', serif;
+
+.about-section {
+  position: relative;
+  background-color: $brand-white;
+  padding: 120px 0 100px;
+  overflow: hidden;
+  min-height: 100vh;
+
+  @media (max-width: 1024px) {
+    padding: 90px 0 60px;
+  }
+
+  // Traditional background motif pattern
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.02;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0 C60 10 70 20 80 40 C70 60 60 70 40 80 C20 70 10 60 0 40 C10 20 20 10 40 0 Z' fill='none' stroke='%23000000' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  &__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+
+    @media (max-width: 1024px) {
+      gap: 80px;
+      padding: 0 20px;
+    }
+  }
+}
+
+// ── Editorial Header ────────────────────────────────────────────────────────
+.about-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  &__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: $brand-orange;
+    font-family: $font-body;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    color: $brand-black;
+    line-height: 1.1;
+    margin: 0;
+
+    span {
+      font-style: italic;
+      color: $brand-orange;
+      font-family: $font-display;
+      font-weight: 400;
+    }
+  }
+
+  &__desc {
+    font-family: $font-body;
+    font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+    color: rgba($brand-black, 0.6);
+    line-height: 1.7;
+    margin: 0;
+  }
+}
+
+// Subtitle & Title Reusable Editorial Style
+.section-subtitle {
+  display: block;
+  font-family: $font-body;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $brand-orange;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: $font-display;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: $brand-black;
+  margin: 0 0 24px 0;
+  line-height: 1.2;
+}
+
+// ── Section 1: Split Story ──────────────────────────────────────────────────
+.about-story {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 80px;
+  align-items: center;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  &__image-wrapper {
+    position: relative;
+    padding-right: 20px;
+    padding-bottom: 20px;
+  }
+
+  &__image {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 2;
+
+    @media (max-width: 768px) {
+      height: 320px;
+    }
+  }
+
+  &__image-border {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 90%;
+    height: 90%;
+    border: 2px solid $brand-orange;
+    border-radius: 16px;
+    z-index: 1;
+    pointer-events: none;
+    transform: translate(12px, 12px);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+
+    .story-paragraph {
+      font-family: $font-body;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: rgba($brand-black, 0.65);
+      margin: 0 0 20px 0;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+  }
+}
+
+// ── Section 2: Pillars ──────────────────────────────────────────────────────
+.about-pillars {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+  }
+}
+
+.pillar-card {
+  padding: 40px;
+  border-radius: 20px;
+  background-color: rgba($brand-black, 0.015);
+  border: 1px solid rgba($brand-black, 0.04);
+  transition: all 0.4s $ease-luxury;
+
+  &__icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: rgba($brand-orange, 0.08);
+    color: $brand-orange;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    transition: all 0.4s ease;
+  }
+
+  &__title {
+    font-family: $font-accent;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: $brand-black;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__desc {
+    font-family: $font-body;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba($brand-black, 0.6);
+    margin: 0;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba($brand-orange, 0.05);
+    border-color: rgba($brand-orange, 0.2);
+
+    .pillar-card__icon-box {
+      background-color: $brand-orange;
+      color: $brand-white;
+    }
+  }
+}
+
+// ── Section 3: Journey Timeline ──────────────────────────────────────────────
+.about-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.timeline-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.timeline-track {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background-color: rgba($brand-black, 0.1);
+  transform: translateX(-50%);
+
+  @media (max-width: 768px) {
+    left: 20px;
+  }
+}
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  width: 50%;
+  padding: 0 40px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 0;
+  }
+
+  &--left {
+    align-self: flex-start;
+    justify-content: flex-end;
+    text-align: right;
+
+    @media (max-width: 768px) {
+      align-self: flex-start;
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    .timeline-dot {
+      right: 0;
+      transform: translate(50%, -50%);
+
+      @media (max-width: 768px) {
+        left: 20px;
+        right: auto;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+
+  &--right {
+    align-self: flex-end;
+    justify-content: flex-start;
+    text-align: left;
+
+    .timeline-dot {
+      left: 0;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+.timeline-dot {
+  position: absolute;
+  top: 30px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: $brand-orange;
+  border: 3px solid $brand-white;
+  box-shadow: 0 0 0 4px rgba($brand-orange, 0.15);
+  z-index: 5;
+}
+
+.timeline-card {
+  background-color: #FAF9F6; // Rich off-white paper
+  border: 1px solid rgba($brand-black, 0.05);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  max-width: 420px;
+  width: 100%;
+  transition: all 0.4s $ease-luxury;
+
+  &__year {
+    font-family: $font-accent;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $brand-orange;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    font-family: $font-accent;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: $brand-black;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__desc {
+    font-family: $font-body;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba($brand-black, 0.6);
+    margin: 0;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba($brand-black, 0.08);
+    border-color: rgba($brand-orange, 0.25);
+  }
+}
+
+// ── Section 4: Tribute to Weavers ───────────────────────────────────────────
+.about-tribute {
+  &__box {
+    background-color: $brand-black;
+    color: $brand-white;
+    border-radius: 24px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__left {
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+
+    @media (max-width: 600px) {
+      padding: 40px 20px;
+    }
+
+    h3 {
+      font-family: $font-display;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      margin: 0;
+    }
+
+    p {
+      font-family: $font-body;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: rgba($brand-white, 0.7);
+      margin: 0;
+    }
+  }
+
+  &__icon {
+    color: $brand-orange;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 10px;
+
+    .number {
+      font-family: $font-display;
+      font-size: 3rem;
+      font-weight: 700;
+      color: $brand-orange;
+      line-height: 1;
+    }
+
+    .label {
+      font-family: $font-body;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba($brand-white, 0.5);
+    }
+  }
+
+  &__right {
+    height: 100%;
+    min-height: 380px;
+
+    @media (max-width: 900px) {
+      min-height: 280px;
+    }
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
