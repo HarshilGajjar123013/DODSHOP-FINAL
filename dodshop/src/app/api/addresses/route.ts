@@ -95,7 +95,7 @@ export async function POST(req: Request) {
 
     try {
       // 1. Try PostgreSQL Database via Prisma
-      savedAddress = await prisma.$transaction(async (tx) => {
+      savedAddress = await prisma.$transaction(async (tx: any) => {
         // If this address is set to default, unset other default addresses for the user
         if (address.isDefault) {
           await tx.address.updateMany({

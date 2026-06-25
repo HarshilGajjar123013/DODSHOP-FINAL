@@ -125,7 +125,7 @@ export async function POST(req: Request) {
 
     try {
       // 1. Try PostgreSQL Database transaction
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async (tx: any) => {
         // Delete all old wishlist items
         await tx.wishlistItem.deleteMany({
           where: { customerId: userId }

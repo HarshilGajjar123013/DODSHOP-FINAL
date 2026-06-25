@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
     try {
       // 1. Try DB Write
-      newOrder = await prisma.$transaction(async (tx) => {
+      newOrder = await prisma.$transaction(async (tx: any) => {
         // Create Order
         const order = await tx.order.create({
           data: {
