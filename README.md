@@ -58,6 +58,49 @@ See `.env.example` in the repo root and each app folder.
 - **Cloudinary** (image uploads — admin)
 - **PWA** (dodshop)
 
-## Deployment
+## Deployment (Vercel — 2 separate projects)
 
-Deploy `dodshop` and `Dashbord` as separate Vercel projects. Both share the same `DATABASE_URL`. Set `JWT_SECRET` to a strong random string (32+ bytes) in production.
+Repo: **https://github.com/HarshilGajjar123013/DODSHOP-FINAL**
+
+Each app has its own `vercel.json` with monorepo install settings (`cd .. && npm install`).
+
+### Project 1 — DOD Shop (storefront)
+
+1. Go to [vercel.com/new](https://vercel.com/new) → **Import Git Repository**
+2. Select **DODSHOP-FINAL**
+3. Configure:
+   - **Project Name:** `dodshop` (or your choice)
+   - **Root Directory:** `dodshop` ← click Edit, select `dodshop`
+   - **Framework:** Next.js (auto-detected)
+   - **Build Command:** `npm run build` (default)
+   - **Install Command:** `cd .. && npm install` (from `vercel.json`)
+4. Add **Environment Variables** (Production):
+   - `DATABASE_URL` — PostgreSQL connection string
+   - `JWT_SECRET` — strong secret (32+ chars)
+   - `NEXT_PUBLIC_SITE_URL` — e.g. `https://your-dodshop.vercel.app`
+5. Click **Deploy**
+
+### Project 2 — Admin Dashboard
+
+1. Go to [vercel.com/new](https://vercel.com/new) again → import **same repo**
+2. Configure:
+   - **Project Name:** `dodshop-dashboard`
+   - **Root Directory:** `Dashbord`
+   - **Install Command:** `cd .. && npm install`
+3. Add **Environment Variables** (Production):
+   - `DATABASE_URL` — same as dodshop
+   - `JWT_SECRET` — same as dodshop
+   - `JWT_EXPIRY` — `7d`
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+4. Click **Deploy**
+
+### CLI deploy (after `vercel login`)
+
+```powershell
+cd scripts
+.\deploy-vercel.ps1
+```
+
+Both apps share the same `DATABASE_URL`. Set `JWT_SECRET` to a strong random string (32+ bytes) in production.
