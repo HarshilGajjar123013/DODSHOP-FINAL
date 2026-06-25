@@ -22,6 +22,9 @@ let cachedReachable: boolean | null = null;
 let lastChecked = 0;
 
 export async function isDbReachable(): Promise<boolean> {
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    return true;
+  }
   const now = Date.now();
   // Cache the status for 5 seconds to prevent spamming TCP connections
   if (cachedReachable !== null && now - lastChecked < 5000) {

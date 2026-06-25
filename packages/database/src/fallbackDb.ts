@@ -345,7 +345,11 @@ function getRawData(): any {
       coupons: INITIAL_COUPONS,
       cmsConfig: INITIAL_CMS_CONFIG,
     };
-    fs.writeFileSync(FALLBACK_FILE, JSON.stringify(defaultData, null, 2), 'utf-8');
+    try {
+      fs.writeFileSync(FALLBACK_FILE, JSON.stringify(defaultData, null, 2), 'utf-8');
+    } catch (e) {
+      console.warn('⚠️ Failed to write initial fallback DB to disk (filesystem might be read-only):', e);
+    }
     return defaultData;
   }
 

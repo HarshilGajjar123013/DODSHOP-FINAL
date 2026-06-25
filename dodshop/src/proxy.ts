@@ -12,7 +12,6 @@ const PROTECTED_ROUTES = [
   '/profile',
   '/order',
   '/settings',
-  '/checkout',
 ];
 
 export async function proxy(request: NextRequest) {
