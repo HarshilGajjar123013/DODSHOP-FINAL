@@ -94,7 +94,7 @@ export async function POST(req: Request) {
     let savedAddress: any = null;
 
     try {
-      // 1. Try PostgreSQL Database via Prisma
+      // 1. Try PostgreSQL Database via Prisma (Rebuild trigger)
       savedAddress = await prisma.$transaction(async (tx: any) => {
         // If this address is set to default, unset other default addresses for the user
         if (address.isDefault) {
