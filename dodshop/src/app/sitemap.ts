@@ -15,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     // Dynamic product paths from database or fallback DB
     const products = await getDbProducts();
-    const productRoutes = products.map((product) => ({
+    const productRoutes = products.map((product: any) => ({
       url: `${baseUrl}/product/${product.id}`,
       lastModified: new Date(product.updatedAt || new Date()),
       changeFrequency: 'weekly' as const,

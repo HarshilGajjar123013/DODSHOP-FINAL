@@ -5,7 +5,7 @@ import { getDbProducts } from "@/lib/db";
 export default async function CollectionPage() {
   const dbProducts = await getDbProducts();
   
-  const mappedProducts = dbProducts.map(p => ({
+  const mappedProducts = dbProducts.map((p: any) => ({
     id: p.id,
     title: p.name,
     subtitle: p.fabric || p.subCategory || '',
