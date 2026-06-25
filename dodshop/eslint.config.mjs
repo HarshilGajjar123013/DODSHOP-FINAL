@@ -19,6 +19,7 @@ const eslintConfig = defineConfig([
     "public/swe-worker-*.js",
     "public/swe-worker-*.js.map",
     "scripts/**",
+    "postinstall.js",
   ]),
   {
     rules: {

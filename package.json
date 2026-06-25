@@ -8,6 +8,11 @@
     "dodshop",
     "Dashbord"
   ],
+  "scripts": {
+    "build:dodshop": "npm run db:generate --workspace=@dod/database && npm run build --workspace=dodshop",
+    "build:dashboard": "npm run db:generate --workspace=@dod/database && npm run build --workspace=atelier-admin",
+    "db:generate": "npm run db:generate --workspace=@dod/database"
+  },
   "dependencies": {
     "@prisma/client": "^6.4.1"
   }
