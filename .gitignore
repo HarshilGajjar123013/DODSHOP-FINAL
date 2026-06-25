@@ -10,6 +10,7 @@ build/
 
 # Env files (do not commit secrets)
 .env*
+!.env.example
 
 # misc
 .DS_Store
@@ -23,3 +24,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# user uploads (store in cloud storage in production)
+**/public/uploads/
+
+# PWA generated assets
+**/public/sw.js
+**/public/sw.js.map
+**/public/workbox-*.js
+**/public/workbox-*.js.map
+**/public/fallback-*.js
+**/public/fallback-*.js.map
+**/public/swe-worker-*.js
+**/public/swe-worker-*.js.map

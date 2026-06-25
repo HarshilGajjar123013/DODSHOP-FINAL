@@ -519,7 +519,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         <span className="w-2 h-2 rounded-full bg-[#FF6A00] mt-1.5 flex-shrink-0" />
                         <div>
                           <p className="font-semibold text-gray-800">New Bridal Couture Inquiry</p>
-                          <p className="text-gray-500 text-[10px] mt-0.5">Kareena Kapoor: "London fittings..."</p>
+                          <p className="text-gray-500 text-[10px] mt-0.5">Kareena Kapoor: &ldquo;London fittings...&rdquo;</p>
                         </div>
                       </div>
                       <div className="flex gap-3 text-xs">
