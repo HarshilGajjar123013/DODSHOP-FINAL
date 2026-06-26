@@ -331,6 +331,8 @@ const INITIAL_CMS_CONFIG = {
   seoDescription: 'Discover hand-woven Kanjeevarams, Patan Patolas, and zardozi blouses.',
 };
 
+const isReadOnlyEnv = !!(process.env.VERCEL || process.env.NODE_ENV === 'production');
+
 let inMemoryData: any = null;
 
 function getRawData(): any {
@@ -338,19 +340,25 @@ function getRawData(): any {
     return inMemoryData;
   }
 
+  const defaultData = {
+    products: INITIAL_PRODUCTS,
+    categories: INITIAL_CATEGORIES,
+    collections: INITIAL_COLLECTIONS,
+    orders: INITIAL_ORDERS,
+    customers: INITIAL_CUSTOMERS,
+    inventoryLogs: INITIAL_INVENTORY_LOGS,
+    contactForms: INITIAL_CONTACT_FORMS,
+    securityLogs: INITIAL_SECURITY_LOGS,
+    coupons: INITIAL_COUPONS,
+    cmsConfig: INITIAL_CMS_CONFIG,
+  };
+
+  if (isReadOnlyEnv) {
+    inMemoryData = defaultData;
+    return defaultData;
+  }
+
   if (!fs.existsSync(FALLBACK_FILE)) {
-    const defaultData = {
-      products: INITIAL_PRODUCTS,
-      categories: INITIAL_CATEGORIES,
-      collections: INITIAL_COLLECTIONS,
-      orders: INITIAL_ORDERS,
-      customers: INITIAL_CUSTOMERS,
-      inventoryLogs: INITIAL_INVENTORY_LOGS,
-      contactForms: INITIAL_CONTACT_FORMS,
-      securityLogs: INITIAL_SECURITY_LOGS,
-      coupons: INITIAL_COUPONS,
-      cmsConfig: INITIAL_CMS_CONFIG,
-    };
     try {
       fs.writeFileSync(FALLBACK_FILE, JSON.stringify(defaultData, null, 2), 'utf-8');
     } catch (e) {
@@ -376,6 +384,9 @@ function getRawData(): any {
 
 function saveRawData(data: any) {
   inMemoryData = data;
+  if (isReadOnlyEnv) {
+    return;
+  }
   try {
     fs.writeFileSync(FALLBACK_FILE, JSON.stringify(data, null, 2), 'utf-8');
   } catch (error: any) {

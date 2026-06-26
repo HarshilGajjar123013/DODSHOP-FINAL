@@ -6,9 +6,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir, copyFile } from 'fs/promises';
 import path from 'path';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'];
+
+const isReadOnlyEnv = !!(process.env.VERCEL || process.env.NODE_ENV === 'production');
 
 // Dashboard uploads directory (for admin preview)
 const DASHBOARD_UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads', 'products');
@@ -44,41 +47,61 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Ensure upload directories exist
-    await mkdir(DASHBOARD_UPLOAD_DIR, { recursive: true });
-    await mkdir(STOREFRONT_UPLOAD_DIR, { recursive: true });
+    const isCloudinaryConfigured =
+      process.env.CLOUDINARY_CLOUD_NAME &&
+      process.env.CLOUDINARY_CLOUD_NAME !== 'your-cloud-name';
 
-    // Save each file locally
+    if (isReadOnlyEnv && !isCloudinaryConfigured) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Local filesystem is read-only on Vercel. Please configure Cloudinary environment variables (CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET) to enable uploads in production.'
+        },
+        { status: 400 }
+      );
+    }
+
+    // Save each file (Cloudinary if configured, otherwise local fallback for local development)
     const uploadResults = await Promise.all(
       files.map(async (file) => {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        // Generate unique filename: timestamp-randomhex-originalname
-        const ext = path.extname(file.name) || '.jpg';
-        const safeName = file.name
-          .replace(/[^a-zA-Z0-9.-]/g, '_')
-          .replace(ext, '');
-        const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safeName}${ext}`;
+        if (isCloudinaryConfigured) {
+          const uploadRes = await uploadToCloudinary(buffer, 'dod_products');
+          return {
+            url: uploadRes.url,
+            originalName: file.name,
+          };
+        } else {
+          // Ensure upload directories exist
+          await mkdir(DASHBOARD_UPLOAD_DIR, { recursive: true });
+          await mkdir(STOREFRONT_UPLOAD_DIR, { recursive: true });
 
-        // Save to Dashboard public folder
-        const dashboardPath = path.join(DASHBOARD_UPLOAD_DIR, uniqueName);
-        await writeFile(dashboardPath, buffer);
+          // Generate unique filename
+          const ext = path.extname(file.name) || '.jpg';
+          const safeName = file.name
+            .replace(/[^a-zA-Z0-9.-]/g, '_')
+            .replace(ext, '');
+          const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safeName}${ext}`;
 
-        // Also save to Storefront public folder so customers can view images
-        try {
-          const storefrontPath = path.join(STOREFRONT_UPLOAD_DIR, uniqueName);
-          await copyFile(dashboardPath, storefrontPath);
-        } catch {
-          // If storefront directory copy fails (e.g. dodshop not present), continue silently
-          console.warn('[UPLOAD] Could not copy to storefront directory — images may not show on customer site');
+          // Save to Dashboard public folder
+          const dashboardPath = path.join(DASHBOARD_UPLOAD_DIR, uniqueName);
+          await writeFile(dashboardPath, buffer);
+
+          // Also save to Storefront public folder so customers can view images
+          try {
+            const storefrontPath = path.join(STOREFRONT_UPLOAD_DIR, uniqueName);
+            await copyFile(dashboardPath, storefrontPath);
+          } catch {
+            console.warn('[UPLOAD] Could not copy to storefront directory — images may not show on customer site');
+          }
+
+          return {
+            url: `/uploads/products/${uniqueName}`,
+            originalName: file.name,
+          };
         }
-
-        // Return the public URL path
-        return {
-          url: `/uploads/products/${uniqueName}`,
-          originalName: file.name,
-        };
       })
     );
 
