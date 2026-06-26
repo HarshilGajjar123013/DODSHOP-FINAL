@@ -25,7 +25,11 @@ export async function GET(req: Request) {
       // 1. Try querying the database
       const where: any = {};
       if (categoryId) where.categoryId = categoryId;
-      if (status) where.status = status;
+      if (status) {
+        where.status = status;
+      } else {
+        where.status = { not: 'ARCHIVED' };
+      }
       if (search) {
         where.OR = [
           { name: { contains: search, mode: 'insensitive' } },
@@ -65,6 +69,8 @@ export async function GET(req: Request) {
       }
       if (status) {
         allProducts = allProducts.filter(p => p.status === status);
+      } else {
+        allProducts = allProducts.filter(p => p.status !== 'ARCHIVED');
       }
       if (search) {
         const query = search.toLowerCase();

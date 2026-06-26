@@ -28,7 +28,7 @@
       ],
       "features": [],
       "tags": [],
-      "status": "ACTIVE",
+      "status": "ARCHIVED",
       "featured": false,
       "bestSeller": false,
       "premium": true,
@@ -41,7 +41,7 @@
       "id": "034f3743-d140-4ee5-9312-16ea0923a3bb",
       "slug": "harshil-gajjar",
       "createdAt": "2026-06-23T21:48:53.546Z",
-      "updatedAt": "2026-06-24T16:14:13.784Z",
+      "updatedAt": "2026-06-26T09:44:15.936Z",
       "rating": 5,
       "reviewCount": 0
     },
@@ -165,7 +165,7 @@
       ],
       "features": [],
       "tags": [],
-      "status": "ACTIVE",
+      "status": "ARCHIVED",
       "featured": true,
       "bestSeller": false,
       "premium": true,
@@ -178,7 +178,51 @@
       "id": "471fe127-6afd-44b6-886e-e95c33c5968b",
       "slug": "shaggy",
       "createdAt": "2026-06-24T19:34:39.153Z",
-      "updatedAt": "2026-06-24T19:34:39.153Z",
+      "updatedAt": "2026-06-26T09:41:23.181Z",
+      "rating": 5,
+      "reviewCount": 0
+    },
+    {
+      "name": "HGDRFH",
+      "sku": "DOD-SAR-887",
+      "categoryId": "1859e2a1-c6de-482e-868c-f03c91c4ea9f",
+      "subCategory": "YMMTNGDFBSD",
+      "collectionId": null,
+      "mrp": 6000,
+      "sellingPrice": 6500,
+      "discount": 0,
+      "gst": 5,
+      "stock": 5,
+      "lowStockAlert": 2,
+      "description": "YFJDTHRGSEAFWD",
+      "fabric": "AFSDGFHG",
+      "weaveType": "FSGDFGM",
+      "occasion": "GSDHHJ",
+      "sareeLength": "5.5 Meters",
+      "blousePiece": "0.8 Meters (Unstitched Included)",
+      "careInstructions": "Dry Clean Only (Store in Muslin Bag)",
+      "origin": "India (Varanasi, UP)",
+      "colors": [
+        "#C5A059"
+      ],
+      "sizes": [
+        "Free Size"
+      ],
+      "features": [],
+      "tags": [],
+      "status": "ACTIVE",
+      "featured": false,
+      "bestSeller": true,
+      "premium": true,
+      "newArrival": true,
+      "images": [
+        "/uploads/products/1782379035469-30ss5b-Nitro_Wallpaper_01_3840x2400.jpg"
+      ],
+      "videoUrl": null,
+      "id": "b88170d8-5621-46db-8b14-d3423da6da75",
+      "slug": "hgdrfh",
+      "createdAt": "2026-06-25T09:17:28.287Z",
+      "updatedAt": "2026-06-25T09:17:28.287Z",
       "rating": 5,
       "reviewCount": 0
     }
@@ -719,6 +763,16 @@
       "type": "STOCK_IN",
       "timestamp": "2026-06-24T19:34:39.218Z",
       "user": "Admin ID: dev-fallback-super-admin (SUPER_ADMIN)"
+    },
+    {
+      "id": "124efc26-7b24-40d4-9439-dc73022edfb3",
+      "productId": "b88170d8-5621-46db-8b14-d3423da6da75",
+      "productName": "HGDRFH",
+      "sku": "DOD-SAR-887",
+      "change": 5,
+      "type": "STOCK_IN",
+      "timestamp": "2026-06-25T09:17:28.361Z",
+      "user": "Admin ID: dev-fallback-super-admin (SUPER_ADMIN)"
     }
   ],
   "contactForms": [],
@@ -981,6 +1035,38 @@
       "id": "56daceeb-162c-4bc9-8d3b-f90e8b006b34",
       "timestamp": "2026-06-24T19:34:39.287Z",
       "action": "Product Created (Fallback): shaggy  (SKU: DOD-SAR-687)",
+      "adminName": "Admin ID: dev-fallback-super-admin",
+      "role": "SUPER_ADMIN",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "71b3cc62-4aeb-45d1-8d91-e7f9dac8a28f",
+      "timestamp": "2026-06-25T09:17:28.417Z",
+      "action": "Product Created (Fallback): HGDRFH (SKU: DOD-SAR-887)",
+      "adminName": "Admin ID: dev-fallback-super-admin",
+      "role": "SUPER_ADMIN",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "33b7a9e1-0f4f-4a13-86dd-007838d9cad1",
+      "timestamp": "2026-06-26T09:41:16.657Z",
+      "action": "Product Archived (Fallback): Harshil Gajjar (SKU: DOD-SAR-143)",
+      "adminName": "Admin ID: dev-fallback-super-admin",
+      "role": "SUPER_ADMIN",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "45355f43-26e0-4dcb-b301-fa0febc876b4",
+      "timestamp": "2026-06-26T09:41:23.251Z",
+      "action": "Product Archived (Fallback): shaggy  (SKU: DOD-SAR-687)",
+      "adminName": "Admin ID: dev-fallback-super-admin",
+      "role": "SUPER_ADMIN",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "fa6c5e5b-b293-48fa-ab1f-109a11a9f08f",
+      "timestamp": "2026-06-26T09:44:16.002Z",
+      "action": "Product Archived (Fallback): Harshil Gajjar (SKU: DOD-SAR-143)",
       "adminName": "Admin ID: dev-fallback-super-admin",
       "role": "SUPER_ADMIN",
       "status": "SUCCESS"
