@@ -331,7 +331,13 @@ const INITIAL_CMS_CONFIG = {
   seoDescription: 'Discover hand-woven Kanjeevarams, Patan Patolas, and zardozi blouses.',
 };
 
+let inMemoryData: any = null;
+
 function getRawData(): any {
+  if (inMemoryData) {
+    return inMemoryData;
+  }
+
   if (!fs.existsSync(FALLBACK_FILE)) {
     const defaultData = {
       products: INITIAL_PRODUCTS,
@@ -350,26 +356,34 @@ function getRawData(): any {
     } catch (e) {
       console.warn('⚠️ Failed to write initial fallback DB to disk (filesystem might be read-only):', e);
     }
+    inMemoryData = defaultData;
     return defaultData;
   }
 
   try {
     const content = fs.readFileSync(FALLBACK_FILE, 'utf-8');
-    return JSON.parse(content);
+    inMemoryData = JSON.parse(content);
+    return inMemoryData;
   } catch (error) {
     console.error('Failed to read fallback DB, resetting to defaults.', error);
     try {
       fs.unlinkSync(FALLBACK_FILE);
     } catch (e) {}
+    inMemoryData = null;
     return getRawData();
   }
 }
 
 function saveRawData(data: any) {
+  inMemoryData = data;
   try {
     fs.writeFileSync(FALLBACK_FILE, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (error) {
-    console.error('Failed to save fallback DB:', error);
+  } catch (error: any) {
+    if (error.code === 'EROFS') {
+      console.warn('⚠️ Read-only filesystem detected on Vercel. Saved changes to in-memory fallback cache only.');
+    } else {
+      console.error('Failed to save fallback DB to disk:', error);
+    }
   }
 }
 
